@@ -570,7 +570,6 @@ class OrganizerApp:
             if cfg.get("invite_group_key"):
                 self.register_action(
                     cfg["invite_group_key"], self.logic.execute_group_invite,
-                    dofus_only=True,
                 )
             if cfg.get("prev_key"):
                 self.register_action(cfg["prev_key"], self.prev_char)
@@ -591,7 +590,6 @@ class OrganizerApp:
             if cfg.get("treasure_key"):
                 self.register_action(
                     cfg["treasure_key"], self.logic.execute_treasure_hunt,
-                    dofus_only=True,
                 )
             if cfg.get("swap_xp_drop_key"):
                 self.register_action(
