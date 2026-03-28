@@ -64,7 +64,8 @@ Vous pouvez également télécharger une archive ZIP du projet et l'extraire loc
 
 ## Version éxécutables ?
 
-Pour le moment ce n'est pas prévu mais si vraiment les utilisateurs n'y arrivent pas nous pourrions faire une version éxécutable avec pyinstaller ou autre.
+Ajoutez récemment pour contrer les gros hackeur de merde....
+On utilise Inno Setup, avec le setup.iss pour créer l'installateur windows.
 
 ---
 

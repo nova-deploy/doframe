@@ -166,6 +166,7 @@ class OrganizerApp:
 
         self.gui.root.after(0, self.gui.toggle_visibility)
 
+
     def toggle_from_tray(self, icon, item):
 
         def safe_toggle():
@@ -617,6 +618,27 @@ class OrganizerApp:
         os.system(f"taskkill /F /PID {my_pid} /T")
 
 
+CURRENT_VERSION = "1.3.1"
+VERSION_URL = "https://raw.githubusercontent.com/Winnings9916/doframe/main/version.json"
+def check_version():
+    try:
+        response = requests.get(VERSION_URL, timeout=5)
+        response.raise_for_status() 
+        data = response.json()
+        latest_version = data.get("version")
+
+        if latest_version and latest_version != CURRENT_VERSION:
+            message = (
+                f"Une mise à jour est requise pour utiliser le logiciel.\n\n"
+                f"Votre version : {CURRENT_VERSION}\n"
+                f"Version disponible : {latest_version}\n\n"
+                f"Mise à jour dispo sur doframe.fr"
+            )
+            ctypes.windll.user32.MessageBoxW(0, message, "Mise à jour requise", 0x10)
+    except requests.RequestException:
+        ctypes.windll.user32.MessageBoxW(0, "Impossible de vérifier la version.", "Erreur réseau", 0x10)
+        
+
 def is_admin():
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()
@@ -676,6 +698,8 @@ def start_application():
         run_as_admin()
         sys.exit()
 
+    check_version()
+    
     _app_mutex = handle_multiple_instances()
 
     app = OrganizerApp()
