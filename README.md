@@ -1,5 +1,8 @@
 # Doframe v1.3.1
 
+https://doframe.fr >>>> site web officiel !
+
+
 **Doframe** est un outil de gestion multi-comptes pour le jeu **Dofus**, permettant de jouer avec plusieurs personnages de manière fluide et organisée depuis un seul poste.
 
 > Ce projet est un dump du code source de Doframe. Il ne m'appartient pas et n'est pas de mon idée. Je le publie uniquement dans un souci de transparence, afin d'éviter que des versions modifiées avec du code malveillant ne circulent. (puis les créateurs de dofus l'ont fait supprimer par son créateur original...)
