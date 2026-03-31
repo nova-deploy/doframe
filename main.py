@@ -1,6 +1,7 @@
 import os
 import sys
 import ctypes
+import subprocess
 import threading
 import keyboard
 import requests
@@ -190,13 +191,15 @@ class OrganizerApp:
             return
 
         try:
-            output = (
-                os.popen('tasklist /FI "IMAGENAME eq organizer.exe" /NH').read().lower()
+            result = subprocess.run(
+                ['tasklist', '/FI', 'IMAGENAME eq organizer.exe', '/NH'],
+                capture_output=True, text=True, check=False
             )
+            output = result.stdout.lower()
 
             if "organizer.exe" in output:
                 self.show_conflict_popup()
-        except Exception:
+        except (Exception, FileNotFoundError):
             pass
 
     def show_conflict_popup(self):
@@ -236,8 +239,11 @@ class OrganizerApp:
             if var_ignore.get():
                 self.config.data["ignore_organizer_warning"] = True
                 self.config.save()
-
-            os.system("taskkill /F /IM organizer.exe /T")
+            
+            try:
+                subprocess.run(["taskkill", "/F", "/IM", "organizer.exe", "/T"], check=False, capture_output=True)
+            except FileNotFoundError:
+                pass
 
             popup.destroy()
             self.gui.show_temporary_message(
@@ -643,11 +649,14 @@ class OrganizerApp:
     def quit_app(self):
 
         my_pid = os.getpid()
-        os.system(f"taskkill /F /PID {my_pid} /T")
+        try:
+            subprocess.run(["taskkill", "/F", "/PID", str(my_pid), "/T"], check=False, capture_output=True)
+        except FileNotFoundError:
+            pass
 
 
-CURRENT_VERSION = "1.3.1"
-VERSION_URL = "https://raw.githubusercontent.com/Winnings9916/doframe/main/version.json"
+CURRENT_VERSION = "1.3.2"
+VERSION_URL = "https://raw.githubusercontent.com/nova-deploy/doframe/refs/heads/main/version.json"
 def check_version():
     try:
         response = requests.get(VERSION_URL, timeout=5)

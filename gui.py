@@ -7,7 +7,8 @@ import time
 import win32api
 import win32con
 import os
-import webbrowser 
+import webbrowser
+import subprocess
 from PIL import Image, ImageTk
 
 ctk.set_appearance_mode("Dark")  
@@ -453,7 +454,11 @@ class OrganizerGUI:
     def hard_kill_app(self):
         """ Force la fermeture immédiate de tout l'arbre de processus de DOFRAME """
         my_pid = os.getpid()
-        os.system(f"taskkill /F /PID {my_pid} /T")
+        try:
+            subprocess.run(["taskkill", "/F", "/PID", str(my_pid), "/T"], check=False, capture_output=True, text=True)
+        except FileNotFoundError:
+            # taskkill not found, maybe log this
+            pass
 
     def launch_tutorial(self):
         if not self.app.config.data.get("tutorial_done", False):
@@ -464,8 +469,6 @@ class OrganizerGUI:
             "Pas de tutoriel intégré pour le moment",
             "Le créateur de Doframe s'est fait shutdown par Ankama, mais aussi sa vidéo, donc pour le moment il n'y pas de tutoriel."
         )
-        if rep:
-            webbrowser.open("https://buymeacoffee.com/luframe")
 
     def open_bind_manager(self):
         """ Ouvre la fenêtre de gestion avancée des binds """
